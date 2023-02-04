@@ -2,6 +2,7 @@ let searchBtn = document.querySelector("#search-button");
 apiKey = "b3c45a3d775f40413927ce1c2d7bf921";
 let longitude;
 let latitude;
+let currentWeather;
 
 searchBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -17,22 +18,22 @@ searchBtn.addEventListener("click", function (e) {
     .then((city) => {
       longitude = city[0].lon;
       latitude = city[0].lat;
-      console.log(longitude);
-      console.log(latitude);
-     getWeather();
-});});
+      getWeather();
+    });
+});
 
-
-function getWeather (){
-fetch(
-  "https://api.openweathermap.org/data/2.5/forecast?lat=" +
-    latitude +
-    "&lon=" +
-    longitude +
-    "&appid=" +
-    apiKey +
-    "&units=metric"
-)
-  .then((response) => response.json())
-  .then((weather) => console.log(weather.list[6].main,console.log(weather)));
-};
+function getWeather() {
+  fetch(
+    "https://api.openweathermap.org/data/2.5/forecast?lat=" +
+      latitude +
+      "&lon=" +
+      longitude +
+      "&appid=" +
+      apiKey +
+      "&units=metric"
+  )
+    .then((response) => response.json())
+    .then((weather) => {
+      currentWeather = weather.list[6].main;
+    });
+}
