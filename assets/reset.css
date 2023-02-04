@@ -14,5 +14,6 @@ font-size: 32px;
  }
 
  #today{
-    border: solid 5px black;
+    border: solid 1px black;
+    padding: 20px 0px 50px 10px;
  }

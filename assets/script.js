@@ -1,4 +1,3 @@
-
 let todaysDate = moment().format("DD-MM-YY");
 
 let searchBtn = document.querySelector("#search-button");
@@ -7,9 +6,15 @@ let longitude;
 let latitude;
 let currentWeather;
 let currentCity;
+let cityTemp;
+let cityWind;
+let cityHumid;
 
 let h1 = document.createElement("h1");
 let todaysDisplay = document.querySelector("#today");
+let pTemp = document.createElement("p");
+let pWind = document.createElement("p");
+let pHumidity = document.createElement("p");
 
 searchBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -41,11 +46,28 @@ function getWeather() {
   )
     .then((response) => response.json())
     .then((weather) => {
-      console.log(weather)
       currentCity = weather.city.name;
-      currentWeather = JSON.stringify(weather.list[6].main);
-      console.log(currentCity);
+      currentWeather = JSON.stringify(weather.list[5].main);
       h1.textContent = currentCity + " " + "(" + todaysDate + ")";
       todaysDisplay.append(h1);
+      cityWind = JSON.stringify(weather.list[5].wind.speed);
+      cityTemp = JSON.stringify(weather.list[5].main.temp);
+      cityHumid = JSON.stringify(weather.list[5].main.humidity);
+      pTemp.textContent =
+        "Temp: " +
+        cityTemp +
+        "°C";
+        pWind.textContent =
+        " Wind Speed: " +
+        cityWind +
+        "KPH " 
+        pHumidity.textContent = 
+        "Humidity: " +
+        cityHumid +
+        "%";
+      todaysDisplay.append(pTemp);
+      todaysDisplay.append(pWind);
+      todaysDisplay.append(pHumidity);
+
     });
 }
