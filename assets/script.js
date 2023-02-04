@@ -19,9 +19,8 @@ searchBtn.addEventListener("click", function (e) {
       latitude = city[0].lat;
       console.log(longitude);
       console.log(latitude);
-    });
-    getWeather();
-});
+     getWeather();
+});});
 
 
 function getWeather (){
@@ -35,5 +34,5 @@ fetch(
     "&units=metric"
 )
   .then((response) => response.json())
-  .then((weather) => console.log(weather));
+  .then((weather) => console.log(weather.list[6].main,console.log(weather)));
 };
