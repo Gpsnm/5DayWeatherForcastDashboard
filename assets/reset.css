@@ -1,0 +1,21 @@
+.row{
+    background-color: aqua;
+}
+
+.container{
+background-color: blueviolet;
+}
+
+
+
+.list-group{
+    background-color: black;
+    height: 200px;
+    width: 200px;
+}
+
+.today{
+    border: solid 2px black;
+    height:auto;
+    width: auto;
+}
