@@ -1,21 +1,18 @@
-.row{
-    background-color: aqua;
-}
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+background-image: linear-gradient(to right, #3462BB,#200B4D);
+height: 100PX;
+color: white;
+font-size: 32px;
+};
 
-.container{
-background-color: blueviolet;
-}
 
-
-
-.list-group{
-    background-color: black;
-    height: 200px;
-    width: 200px;
-}
-
-.today{
+ aside{
     border: solid 2px black;
-    height:auto;
-    width: auto;
-}
+ }
+
+ #today{
+    border: solid 5px black;
+ }

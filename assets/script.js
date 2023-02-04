@@ -1,12 +1,15 @@
+
+let todaysDate = moment().format("DD-MM-YY");
+
 let searchBtn = document.querySelector("#search-button");
-apiKey = "b3c45a3d775f40413927ce1c2d7bf921";
+let apiKey = "b3c45a3d775f40413927ce1c2d7bf921";
 let longitude;
 let latitude;
 let currentWeather;
 let currentCity;
 
 let h1 = document.createElement("h1");
-let todaysDisplay = document.querySelector(".today");
+let todaysDisplay = document.querySelector("#today");
 
 searchBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -42,7 +45,7 @@ function getWeather() {
       currentCity = weather.city.name;
       currentWeather = JSON.stringify(weather.list[6].main);
       console.log(currentCity);
-      h1.textContent = currentCity;
+      h1.textContent = currentCity + " " + "(" + todaysDate + ")";
       todaysDisplay.append(h1);
     });
 }
