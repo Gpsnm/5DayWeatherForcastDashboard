@@ -38,6 +38,32 @@ searchBtn.addEventListener("click", function (e) {
     });
 });
 
+
+      function foreCast(weatherObj) {
+        let day1 = document.createElement("div");
+        day1.classList.add("weatherForecast");
+        let day1h2 = document.createElement("h2");
+        let day1p2 = document.createElement("p");
+        let day1p3 = document.createElement("p");
+        let day1p4 = document.createElement("p");
+  
+        day1Date = moment(weatherObj.dt_txt).format("DD-MM-YY");
+        cityTemp = JSON.stringify(weatherObj.main.temp);
+        cityWind = JSON.stringify(weatherObj.wind.speed);
+        cityHumid = JSON.stringify(weatherObj.main.humidity);
+        day1h2.textContent = day1Date;
+        day1p2.textContent = "Temp: " + cityTemp + "°C";
+        day1p3.textContent = " Wind Speed: " + cityWind + "KPH ";
+        day1p4.textContent = "Humidity: " + cityHumid + "%";
+        day1.append (day1h2 ,day1p2,day1p3,day1p4);
+
+        fiveDayDisplay.append(day1);
+      }
+
+
+
+
+
 // function that takes the coords from geo api and gives back current weather obj
 function getWeather() {
   fetch(
@@ -53,6 +79,7 @@ function getWeather() {
     .then((weather) => {
       // used to display location temp wind and  humidity into a div with id of today
       console.log(weather);
+      fiveDayDisplay.innerHTML = "";
       currentCity = weather.city.name;
       currentWeather = JSON.stringify(weather.list[5].main);
       h1.textContent = currentCity + " " + "(" + todaysDate + ")";
@@ -67,27 +94,58 @@ function getWeather() {
       todaysDisplay.append(pWind);
       todaysDisplay.append(pHumidity);
 
-      function foreCast() {
-        let day1 = document.createElement("div");
-        day1.classList.add("weatherForecast");
-        let day1h2 = document.createElement("h2");
-        let day1p2 = document.createElement("p");
-        let day1p3 = document.createElement("p");
-        let day1p4 = document.createElement("p");
-  
-        day1Date = moment().format("DD-MM-YY");
-        cityTemp = JSON.stringify(weather.list[9].main.temp);
-        cityWind = JSON.stringify(weather.list[9].wind.speed);
-        cityHumid = JSON.stringify(weather.list[9].main.humidity);
-        day1h2.textContent = day1Date;
-        day1p2.textContent = "Temp: " + cityTemp + "°C";
-        day1p3.textContent = " Wind Speed: " + cityWind + "KPH ";
-        day1p4.textContent = "Humidity: " + cityHumid + "%";
-        day1.append (day1h2 ,day1p2,day1p3,day1p4);
-        fiveDayDisplay.append(day1);
-      }
 
-      foreCast();
+for (let i = 0; i < weather.list.length; i++){
+      // foreCast(weather);
+      const foreCastObj = weather.list[i];
+    let now = moment()
+    let startDate = now.add(1,"days").startOf("day").unix();
+    let endDate = now.add(5,"days").startOf("day").unix();
+
+    if ( foreCastObj.dt > startDate && foreCastObj.dt < endDate){
+      if ( foreCastObj.dt_txt.includes("12:00:00")){
+        console.log(foreCastObj);
+        foreCast(foreCastObj);
+      }
+    }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       // let day1 = document.createElement("div");
       // day1.classList.add("weatherForecast");
       // day1.textContent = todaysDate + "Temp: " + cityTemp + "°C";

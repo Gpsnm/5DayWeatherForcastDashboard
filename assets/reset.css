@@ -29,7 +29,7 @@ font-size: 32px;
  }
 
 .weatherForecast{
-   background-color: aqua;
+   background-color: #3462BB;
    border: solid 5px black;
    width: 17%;
    height:75%;
@@ -37,9 +37,5 @@ font-size: 32px;
 }
 
 h2{
-   color: white;
-}
-
-p{
    color: white;
 }
