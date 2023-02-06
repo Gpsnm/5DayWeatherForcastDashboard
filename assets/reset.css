@@ -23,19 +23,25 @@ font-size: 32px;
    display: flex;
    align-items: center;
    justify-content: space-evenly;
-   border: solid 5px black;
    width:auto;
    height: 400px;
  }
 
 .weatherForecast{
    background-color: #3462BB;
-   border: solid 5px black;
    width: 17%;
    height:75%;
+   color: white;
+   padding:20px;
 
 }
 
 h2{
    color: white;
+}
+
+
+img{
+   width:50px;
+   height: 50px;
 }

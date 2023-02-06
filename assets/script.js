@@ -8,9 +8,11 @@ let longitude;
 let latitude;
 let currentWeather;
 let currentCity;
+let currentWeatherConditions;
 let cityTemp;
 let cityWind;
 let cityHumid;
+let weatherConditions;
 // to access and create new elements via dom
 let searchBtn = document.querySelector("#search-button");
 let h1 = document.createElement("h1");
@@ -19,6 +21,8 @@ let fiveDayDisplay = document.querySelector("#forecast");
 let pTemp = document.createElement("p");
 let pWind = document.createElement("p");
 let pHumidity = document.createElement("p");
+let tempImg = document.createElement("img");
+
 
 // event listen that on click take the users and input and saves the longitude and latitude to later pass into weather api.
 searchBtn.addEventListener("click", function (e) {
@@ -46,16 +50,19 @@ searchBtn.addEventListener("click", function (e) {
         let day1p2 = document.createElement("p");
         let day1p3 = document.createElement("p");
         let day1p4 = document.createElement("p");
+        let tempImg = document.createElement("img");
   
         day1Date = moment(weatherObj.dt_txt).format("DD-MM-YY");
         cityTemp = JSON.stringify(weatherObj.main.temp);
         cityWind = JSON.stringify(weatherObj.wind.speed);
         cityHumid = JSON.stringify(weatherObj.main.humidity);
+        weatherConditions = weatherObj.weather[0].icon;
         day1h2.textContent = day1Date;
+          tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
         day1p2.textContent = "Temp: " + cityTemp + "°C";
         day1p3.textContent = " Wind Speed: " + cityWind + "KPH ";
         day1p4.textContent = "Humidity: " + cityHumid + "%";
-        day1.append (day1h2 ,day1p2,day1p3,day1p4);
+        day1.append (day1h2,tempImg,day1p2,day1p3,day1p4);
 
         fiveDayDisplay.append(day1);
       }
@@ -77,23 +84,29 @@ function getWeather() {
   )
     .then((response) => response.json())
     .then((weather) => {
-      // used to display location temp wind and  humidity into a div with id of today
       console.log(weather);
+      // used to display location temp wind and  humidity into a div with id of today
       fiveDayDisplay.innerHTML = "";
       currentCity = weather.city.name;
       currentWeather = JSON.stringify(weather.list[5].main);
+      weatherConditions = weather.list[1].weather[0].icon;
+      tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
       h1.textContent = currentCity + " " + "(" + todaysDate + ")";
       todaysDisplay.append(h1);
+      todaysDisplay.append(tempImg);
+      weatherConditions = weather.list[1].weather[0].icon;
       cityWind = JSON.stringify(weather.list[1].wind.speed);
       cityTemp = JSON.stringify(weather.list[1].main.temp);
       cityHumid = JSON.stringify(weather.list[1].main.humidity);
       pTemp.textContent = "Temp: " + cityTemp + "°C";
       pWind.textContent = " Wind Speed: " + cityWind + "KPH ";
-      pHumidity.textContent = "Humidity: " + cityHumid + "%";
+      pHumidity.textContent = "Humidity: " + cityHumid + "%"; 
+      // tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
+      todaysDisplay.append()
+      // todaysDisplay.append(tempImg);
       todaysDisplay.append(pTemp);
       todaysDisplay.append(pWind);
       todaysDisplay.append(pHumidity);
-
 
 for (let i = 0; i < weather.list.length; i++){
       // foreCast(weather);
@@ -104,7 +117,6 @@ for (let i = 0; i < weather.list.length; i++){
 
     if ( foreCastObj.dt > startDate && foreCastObj.dt < endDate){
       if ( foreCastObj.dt_txt.includes("12:00:00")){
-        console.log(foreCastObj);
         foreCast(foreCastObj);
       }
     }
