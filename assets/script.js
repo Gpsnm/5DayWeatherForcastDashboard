@@ -13,6 +13,7 @@ let cityTemp;
 let cityWind;
 let cityHumid;
 let weatherConditions;
+let userInput;
 // to access and create new elements via dom
 let searchBtn = document.querySelector("#search-button");
 let h1 = document.createElement("h1");
@@ -22,12 +23,20 @@ let pTemp = document.createElement("p");
 let pWind = document.createElement("p");
 let pHumidity = document.createElement("p");
 let tempImg = document.createElement("img");
+let historyDiv = document.querySelector(".list-group");
 
+
+  window.onload = function(){
+    let saveBtn = document.createElement("button");
+    saveBtn.innerHTML = localStorage.getItem("userInput", userInput).val();
+    historyDiv.append(saveBtn);
+    
+  };
 
 // event listen that on click take the users and input and saves the longitude and latitude to later pass into weather api.
 searchBtn.addEventListener("click", function (e) {
   e.preventDefault();
-  let userInput = document.querySelector("#search-input").value;
+userInput = document.querySelector("#search-input").value;
   fetch(
     "http://api.openweathermap.org/geo/1.0/direct?q=" +
       userInput +
@@ -107,7 +116,7 @@ function getWeather() {
       todaysDisplay.append(pTemp);
       todaysDisplay.append(pWind);
       todaysDisplay.append(pHumidity);
-
+SaveCity();
 for (let i = 0; i < weather.list.length; i++){
       // foreCast(weather);
       const foreCastObj = weather.list[i];
@@ -119,15 +128,15 @@ for (let i = 0; i < weather.list.length; i++){
       if ( foreCastObj.dt_txt.includes("12:00:00")){
         foreCast(foreCastObj);
       }
-    }
-
 
     }
 
-
-
-
-
+    }
+function SaveCity (){
+window.localStorage.setItem('userInput', userInput);
+let newBtn = document.createElement("button");
+newBtn.textContent = window.localStorage.getItem('userInput');
+historyDiv.append(newBtn);}
 
 
 
