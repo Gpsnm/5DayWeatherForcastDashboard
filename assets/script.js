@@ -36,7 +36,7 @@ searchBtn.addEventListener("click", function (e) {
   e.preventDefault();
   userInput = document.querySelector("#search-input").value;
   fetch(
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
       userInput +
       "&limit=5&appid=" +
       apiKey
@@ -64,7 +64,7 @@ function foreCast(weatherObj) {
   weatherConditions = weatherObj.weather[0].icon;
   day1h2.textContent = day1Date;
   tempImg.src =
-    "http://openweathermap.org/img/wn/" + weatherConditions + "@2x.png";
+    "https://openweathermap.org/img/wn/" + weatherConditions + "@2x.png";
   day1p2.textContent = "Temp: " + cityTemp + "°C";
   day1p3.textContent = " Wind Speed: " + cityWind + "KPH ";
   day1p4.textContent = "Humidity: " + cityHumid + "%";
@@ -93,7 +93,7 @@ function getWeather() {
       currentWeather = JSON.stringify(weather.list[5].main);
       weatherConditions = weather.list[1].weather[0].icon;
       tempImg.src =
-        "http://openweathermap.org/img/wn/" + weatherConditions + "@2x.png";
+        "https://openweathermap.org/img/wn/" + weatherConditions + "@2x.png";
       h1.textContent = currentCity + " " + "(" + todaysDate + ")";
       todaysDisplay.append(h1);
       todaysDisplay.append(tempImg);
