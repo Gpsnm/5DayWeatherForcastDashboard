@@ -14,6 +14,7 @@ let cityWind;
 let cityHumid;
 let weatherConditions;
 let userInput = "";
+
 // to access and create new elements via dom
 let searchBtn = document.querySelector("#search-button");
 let h1 = document.createElement("h1");
@@ -24,9 +25,9 @@ let pWind = document.createElement("p");
 let pHumidity = document.createElement("p");
 let tempImg = document.createElement("img");
 let historyDiv = document.querySelector(".list-group");
-let newBtn = document.createElement("button");
 
-window.onload = storageOnRefresh();
+
+// window.onload = storageOnRefresh();
 
 // event listen that on click take the users and input and saves the longitude and latitude to later pass into weather api.
 searchBtn.addEventListener("click", function (e) {
@@ -43,7 +44,6 @@ searchBtn.addEventListener("click", function (e) {
       longitude = city[0].lon;
       latitude = city[0].lat;
       getWeather();
-      SaveCity();
     });
 });
 function foreCast(weatherObj) {
@@ -84,7 +84,7 @@ function getWeather() {
   )
     .then((response) => response.json())
     .then((weather) => {
-    SaveCity();
+      SaveCity();
       // used to display location temp wind and  humidity into a div with id of today
       fiveDayDisplay.innerHTML = "";
       currentCity = weather.city.name;
@@ -124,16 +124,18 @@ function getWeather() {
     });
 }
 
-  
+//  function to save user input to local storage and append as a button.
 function SaveCity() {
-  window.localStorage.setItem("userInput", userInput);
-  newBtn.textContent = localStorage.getItem("userInput");
-  historyDiv.append(newBtn);
-}
-// function to return on refresh;
-function storageOnRefresh() {
-  newBtn.textContent = localStorage.getItem("userInput");
-  historyDiv.append(newBtn);
-}
+let newArr = [];
+localStorage.setItem("userInput", userInput);
+let history = localStorage.getItem("userInput");
+newArr.push(history)
+console.log(newArr);
 
+// for loop to dynamically create history button
+ for (let j = 0; j < newArr.length; j++){
+let newBtn = document.createElement("button");
+newBtn.textContent = history;
+historyDiv.append(newBtn);
 
+}}
