@@ -14,6 +14,7 @@ let cityWind;
 let cityHumid;
 let weatherConditions;
 let userInput = "";
+let history;
 
 // to access and create new elements via dom
 let searchBtn = document.querySelector("#search-button");
@@ -25,9 +26,10 @@ let pWind = document.createElement("p");
 let pHumidity = document.createElement("p");
 let tempImg = document.createElement("img");
 let historyDiv = document.querySelector(".list-group");
+let historyBtn = document.createElement("button");
 
 
-// window.onload = storageOnRefresh();
+window.onload = refreshPage();
 
 // event listen that on click take the users and input and saves the longitude and latitude to later pass into weather api.
 searchBtn.addEventListener("click", function (e) {
@@ -128,14 +130,19 @@ function getWeather() {
 function SaveCity() {
 let newArr = [];
 localStorage.setItem("userInput", userInput);
-let history = localStorage.getItem("userInput");
+history = localStorage.getItem("userInput");
 newArr.push(history)
-console.log(newArr);
-
 // for loop to dynamically create history button
- for (let j = 0; j < newArr.length; j++){
+for (let j = 0; j < newArr.length; j++){
 let newBtn = document.createElement("button");
 newBtn.textContent = history;
 historyDiv.append(newBtn);
+}
 
-}}
+}
+
+// function to keep search history after refresh
+function refreshPage(){
+historyBtn.textContent = localStorage.getItem('userInput');
+historyDiv.append(historyBtn);
+};
