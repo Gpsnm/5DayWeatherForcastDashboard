@@ -13,7 +13,7 @@ let cityTemp;
 let cityWind;
 let cityHumid;
 let weatherConditions;
-let userInput;
+let userInput = "";
 // to access and create new elements via dom
 let searchBtn = document.querySelector("#search-button");
 let h1 = document.createElement("h1");
@@ -24,19 +24,14 @@ let pWind = document.createElement("p");
 let pHumidity = document.createElement("p");
 let tempImg = document.createElement("img");
 let historyDiv = document.querySelector(".list-group");
+let newBtn = document.createElement("button");
 
-
-  window.onload = function(){
-    let saveBtn = document.createElement("button");
-    saveBtn.innerHTML = localStorage.getItem("userInput", userInput).val();
-    historyDiv.append(saveBtn);
-    
-  };
+window.onload = storageOnRefresh();
 
 // event listen that on click take the users and input and saves the longitude and latitude to later pass into weather api.
 searchBtn.addEventListener("click", function (e) {
   e.preventDefault();
-userInput = document.querySelector("#search-input").value;
+  userInput = document.querySelector("#search-input").value;
   fetch(
     "http://api.openweathermap.org/geo/1.0/direct?q=" +
       userInput +
@@ -48,37 +43,33 @@ userInput = document.querySelector("#search-input").value;
       longitude = city[0].lon;
       latitude = city[0].lat;
       getWeather();
+      SaveCity();
     });
 });
+function foreCast(weatherObj) {
+  let day1 = document.createElement("div");
+  day1.classList.add("weatherForecast");
+  let day1h2 = document.createElement("h2");
+  let day1p2 = document.createElement("p");
+  let day1p3 = document.createElement("p");
+  let day1p4 = document.createElement("p");
+  let tempImg = document.createElement("img");
 
+  day1Date = moment(weatherObj.dt_txt).format("DD-MM-YY");
+  cityTemp = JSON.stringify(weatherObj.main.temp);
+  cityWind = JSON.stringify(weatherObj.wind.speed);
+  cityHumid = JSON.stringify(weatherObj.main.humidity);
+  weatherConditions = weatherObj.weather[0].icon;
+  day1h2.textContent = day1Date;
+  tempImg.src =
+    "http://openweathermap.org/img/wn/" + weatherConditions + "@2x.png";
+  day1p2.textContent = "Temp: " + cityTemp + "°C";
+  day1p3.textContent = " Wind Speed: " + cityWind + "KPH ";
+  day1p4.textContent = "Humidity: " + cityHumid + "%";
+  day1.append(day1h2, tempImg, day1p2, day1p3, day1p4);
 
-      function foreCast(weatherObj) {
-        let day1 = document.createElement("div");
-        day1.classList.add("weatherForecast");
-        let day1h2 = document.createElement("h2");
-        let day1p2 = document.createElement("p");
-        let day1p3 = document.createElement("p");
-        let day1p4 = document.createElement("p");
-        let tempImg = document.createElement("img");
-  
-        day1Date = moment(weatherObj.dt_txt).format("DD-MM-YY");
-        cityTemp = JSON.stringify(weatherObj.main.temp);
-        cityWind = JSON.stringify(weatherObj.wind.speed);
-        cityHumid = JSON.stringify(weatherObj.main.humidity);
-        weatherConditions = weatherObj.weather[0].icon;
-        day1h2.textContent = day1Date;
-          tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
-        day1p2.textContent = "Temp: " + cityTemp + "°C";
-        day1p3.textContent = " Wind Speed: " + cityWind + "KPH ";
-        day1p4.textContent = "Humidity: " + cityHumid + "%";
-        day1.append (day1h2,tempImg,day1p2,day1p3,day1p4);
-
-        fiveDayDisplay.append(day1);
-      }
-
-
-
-
+  fiveDayDisplay.append(day1);
+}
 
 // function that takes the coords from geo api and gives back current weather obj
 function getWeather() {
@@ -93,13 +84,14 @@ function getWeather() {
   )
     .then((response) => response.json())
     .then((weather) => {
-      console.log(weather);
+    SaveCity();
       // used to display location temp wind and  humidity into a div with id of today
       fiveDayDisplay.innerHTML = "";
       currentCity = weather.city.name;
       currentWeather = JSON.stringify(weather.list[5].main);
       weatherConditions = weather.list[1].weather[0].icon;
-      tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
+      tempImg.src =
+        "http://openweathermap.org/img/wn/" + weatherConditions + "@2x.png";
       h1.textContent = currentCity + " " + "(" + todaysDate + ")";
       todaysDisplay.append(h1);
       todaysDisplay.append(tempImg);
@@ -109,117 +101,39 @@ function getWeather() {
       cityHumid = JSON.stringify(weather.list[1].main.humidity);
       pTemp.textContent = "Temp: " + cityTemp + "°C";
       pWind.textContent = " Wind Speed: " + cityWind + "KPH ";
-      pHumidity.textContent = "Humidity: " + cityHumid + "%"; 
+      pHumidity.textContent = "Humidity: " + cityHumid + "%";
       // tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
-      todaysDisplay.append()
+      todaysDisplay.append();
       // todaysDisplay.append(tempImg);
       todaysDisplay.append(pTemp);
       todaysDisplay.append(pWind);
       todaysDisplay.append(pHumidity);
-SaveCity();
-for (let i = 0; i < weather.list.length; i++){
-      // foreCast(weather);
-      const foreCastObj = weather.list[i];
-    let now = moment()
-    let startDate = now.add(1,"days").startOf("day").unix();
-    let endDate = now.add(5,"days").startOf("day").unix();
+      for (let i = 0; i < weather.list.length; i++) {
+        // foreCast(weather);
+        const foreCastObj = weather.list[i];
+        let now = moment();
+        let startDate = now.add(1, "days").startOf("day").unix();
+        let endDate = now.add(5, "days").startOf("day").unix();
 
-    if ( foreCastObj.dt > startDate && foreCastObj.dt < endDate){
-      if ( foreCastObj.dt_txt.includes("12:00:00")){
-        foreCast(foreCastObj);
+        if (foreCastObj.dt > startDate && foreCastObj.dt < endDate) {
+          if (foreCastObj.dt_txt.includes("12:00:00")) {
+            foreCast(foreCastObj);
+          }
+        }
       }
-
-    }
-
-    }
-function SaveCity (){
-window.localStorage.setItem('userInput', userInput);
-let newBtn = document.createElement("button");
-newBtn.textContent = window.localStorage.getItem('userInput');
-historyDiv.append(newBtn);}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      // let day1 = document.createElement("div");
-      // day1.classList.add("weatherForecast");
-      // day1.textContent = todaysDate + "Temp: " + cityTemp + "°C";
-      // fiveDayDisplay.append(day1);
-
-      // let day2 = document.createElement("div");
-      // day2.classList.add("weatherForecast");
-      // day2.textContent = "hello";
-      // fiveDayDisplay.append(day2);
-
-      // let day3 = document.createElement("div");
-      // day3.classList.add("weatherForecast");
-      // day3.textContent = "hello";
-      // fiveDayDisplay.append(day3);
-
-      // let day4 = document.createElement("div");
-      // day4.classList.add("weatherForecast");
-      // day4.textContent = "hello";
-      // fiveDayDisplay.append(day4);
-
-      // let day5 = document.createElement("div");
-      // day5.classList.add("weatherForecast");
-      // day5.textContent = "hello";
-      // fiveDayDisplay.append(day5);
     });
 }
 
+  
+function SaveCity() {
+  window.localStorage.setItem("userInput", userInput);
+  newBtn.textContent = localStorage.getItem("userInput");
+  historyDiv.append(newBtn);
+}
+// function to return on refresh;
+function storageOnRefresh() {
+  newBtn.textContent = localStorage.getItem("userInput");
+  historyDiv.append(newBtn);
+}
 
-// function fiveDayForecast() {
-//   let day1 = document.createElement("div");
-//   day1.classList.add("weatherForecast");
-//   day1.textContent =  "Temp: " + cityTemp + "°C"; ;
-//   fiveDayDisplay.append(day1);
 
-//   let day2 = document.createElement("div");
-//   day2.classList.add("weatherForecast");
-//   day2.textContent = "hello";
-//   fiveDayDisplay.append(day2);
-
-//   let day3 = document.createElement("div");
-//   day3.classList.add("weatherForecast");
-//   day3.textContent = "hello";
-//   fiveDayDisplay.append(day3);
-
-//   let day4 = document.createElement("div");
-//   day4.classList.add("weatherForecast");
-//   day4.textContent = "hello";
-//   fiveDayDisplay.append(day4);
-
-//   let day5 = document.createElement("div");
-//   day5.classList.add("weatherForecast");
-//   day5.textContent = "hello";
-//   fiveDayDisplay.append(day5);
-// }
-
-// fiveDayForecast();
