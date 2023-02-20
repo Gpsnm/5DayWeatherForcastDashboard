@@ -104,7 +104,6 @@ function getWeather() {
       pTemp.textContent = "Temp: " + cityTemp + "°C";
       pWind.textContent = " Wind Speed: " + cityWind + "KPH ";
       pHumidity.textContent = "Humidity: " + cityHumid + "%";
-      // tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
       todaysDisplay.append();
       // todaysDisplay.append(tempImg);
       todaysDisplay.append(pTemp);
@@ -143,6 +142,8 @@ historyDiv.append(newBtn);
 
 // function to keep search history after refresh
 function refreshPage(){
-historyBtn.textContent = localStorage.getItem('userInput');
-historyDiv.append(historyBtn);
+  if (historyBtn.textContent = localStorage.getItem('userInput'))
+  {historyDiv.append(historyBtn);
+}
+
 };

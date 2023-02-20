@@ -58,6 +58,6 @@ img{
 }
 
 .list-group{
-   border: solid 2px black;
+   /* border: solid 2px black; */
    height: auto;
 }
