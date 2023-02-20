@@ -28,7 +28,7 @@ let pHumidity = document.createElement("p");
 let tempImg = document.createElement("img");
 let historyDiv = document.querySelector(".list-group");
 
-window.onload = refreshPage();
+
 
 // event listen that on click take the users and input and saves the longitude and latitude to later pass into weather api.
 searchBtn.addEventListener("click", function (e) {
@@ -136,12 +136,13 @@ function SaveCity() {
 }
 // }
 // function to keep search history after refresh
+ if (localStorage !== null){
 function refreshPage() {
+  if (localStorage !== null){}
   savedLocation = JSON.parse(localStorage.getItem("userInput"));
-  console.log(savedLocation);
   for (let j = 0; j < savedLocation.length; j++) {
     let historyBtn = document.createElement("button");
     historyBtn.textContent = savedLocation[j];
     historyDiv.append(historyBtn);
   }
-}
+}}
