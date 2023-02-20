@@ -15,6 +15,7 @@ let cityHumid;
 let weatherConditions;
 let userInput = "";
 let history;
+let newArr = [];
 
 // to access and create new elements via dom
 let searchBtn = document.querySelector("#search-button");
@@ -26,10 +27,8 @@ let pWind = document.createElement("p");
 let pHumidity = document.createElement("p");
 let tempImg = document.createElement("img");
 let historyDiv = document.querySelector(".list-group");
-let historyBtn = document.createElement("button");
 
 
-window.onload = refreshPage();
 
 // event listen that on click take the users and input and saves the longitude and latitude to later pass into weather api.
 searchBtn.addEventListener("click", function (e) {
@@ -104,7 +103,6 @@ function getWeather() {
       pTemp.textContent = "Temp: " + cityTemp + "°C";
       pWind.textContent = " Wind Speed: " + cityWind + "KPH ";
       pHumidity.textContent = "Humidity: " + cityHumid + "%";
-      // tempImg.src ="http://openweathermap.org/img/wn/" + weatherConditions +"@2x.png";
       todaysDisplay.append();
       // todaysDisplay.append(tempImg);
       todaysDisplay.append(pTemp);
@@ -128,21 +126,23 @@ function getWeather() {
 
 //  function to save user input to local storage and append as a button.
 function SaveCity() {
-let newArr = [];
-localStorage.setItem("userInput", userInput);
-history = localStorage.getItem("userInput");
-newArr.push(history)
-// for loop to dynamically create history button
-for (let j = 0; j < newArr.length; j++){
-let newBtn = document.createElement("button");
-newBtn.textContent = history;
-historyDiv.append(newBtn);
+  newArr.unshift(userInput);
+  localStorage.setItem("userInput", JSON.stringify(newArr));
+  // for loop to dynamically create history button
+  // for (let j = 0; j < newArr.length; j++){
+  let newBtn = document.createElement("button");
+  newBtn.textContent = newArr[0];
+  historyDiv.append(newBtn);
 }
-
-}
-
+// }
 // function to keep search history after refresh
-function refreshPage(){
-historyBtn.textContent = localStorage.getItem('userInput');
-historyDiv.append(historyBtn);
-};
+ if (localStorage !== null){
+function refreshPage() {
+  if (localStorage !== null){}
+  savedLocation = JSON.parse(localStorage.getItem("userInput"));
+  for (let j = 0; j < savedLocation.length; j++) {
+    let historyBtn = document.createElement("button");
+    historyBtn.textContent = savedLocation[j];
+    historyDiv.append(historyBtn);
+  }
+}}
