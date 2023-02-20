@@ -27,7 +27,6 @@ let pWind = document.createElement("p");
 let pHumidity = document.createElement("p");
 let tempImg = document.createElement("img");
 let historyDiv = document.querySelector(".list-group");
-let historyBtn = document.createElement("button");
 
 window.onload = refreshPage();
 
@@ -128,17 +127,21 @@ function getWeather() {
 //  function to save user input to local storage and append as a button.
 function SaveCity() {
   newArr.unshift(userInput);
-  localStorage.setItem("userInput", newArr);
+  localStorage.setItem("userInput", JSON.stringify(newArr));
   // for loop to dynamically create history button
   // for (let j = 0; j < newArr.length; j++){
   let newBtn = document.createElement("button");
   newBtn.textContent = newArr[0];
   historyDiv.append(newBtn);
-  }
+}
 // }
 // function to keep search history after refresh
 function refreshPage() {
-  if ((historyBtn.textContent = localStorage.getItem("userInput"))) {
+  savedLocation = JSON.parse(localStorage.getItem("userInput"));
+  console.log(savedLocation);
+  for (let j = 0; j < savedLocation.length; j++) {
+    let historyBtn = document.createElement("button");
+    historyBtn.textContent = savedLocation[j];
     historyDiv.append(historyBtn);
   }
 }
